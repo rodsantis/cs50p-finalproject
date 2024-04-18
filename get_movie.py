@@ -23,6 +23,22 @@ def main():
         for i in range(len(director_information)):
             print(f"Director ID: {director_information[i]['id']}, Director Name: {director_information[i]['name']}")
 
+    # Getting the stars of the movie
+    stars_information = get_stars(conn, movie_title)
+    if stars_information is None:
+        print(f"There is no star in this Movie reported")
+    else:    
+        for j in range(len(stars_information)):
+            print(f"Star ID: {stars_information[j]['id']}, Star Name: {stars_information[j]['name']}")
+
+    # Getting the rating for the movie
+    rating_information = get_rating(conn, movie_title)
+    if rating_information is None:
+        print(f"There is no rating recorded for this Movie yet")
+    else:    
+        for k in range(len(rating_information)):
+            print(f"Rating: {rating_information[k]['rating']}, Votes: {rating_information[k]['votes']}")
+
 
 def connection(database):
     """
@@ -56,19 +72,17 @@ def get_director(conn, movie):
         Query people table to get the Director of the movie
         using the movie_id and joining the tables through directors table
         IF there is no Director > function will return None
+        :return: a List of Dictionaries with the k/v as 'id' and 'name'
     """
     # Getting Director information
     director_cur = conn.cursor()
     director_cur.execute("SELECT people.id, people.name FROM people, directors, movies WHERE movies.id = directors.movie_id AND directors.person_id = people.id AND title = ?", (movie,))
-    # Getting the valurs of the director
+    # Getting the values of the director
     director_info = director_cur.fetchall()
     # Use the print below to verify how many directors was found
     # print(len(director_info))
     if len(director_info) == 0:
         return None
-    elif len(director_info) == 1:
-        director_id, director_name = director_info[0]
-        return [{'id': director_id, 'name': director_name}]
     else:
         director_list = []
         for i in range(len(director_info)):
@@ -79,7 +93,48 @@ def get_director(conn, movie):
         return director_list
             
 
+def get_stars(conn, movie):
+    """
+        Query people table to get the Actors of the movie
+        using the movie_id and joining the tables through stars table
+        :return: a List of Dictionaries with the k/v as 'id' and 'name'
+    """
+    # Getting stars information
+    star_cur = conn.cursor()
+    star_cur.execute("SELECT people.id, people.name FROM people, stars, movies WHERE movies.id = stars.movie_id AND stars.person_id = people.id AND title = ?", (movie,))
+    # Storing stars information
+    star_info = star_cur.fetchall()
 
+    if len(star_info) == 0:
+        return None
+    else:
+        star_list = []
+        for i in range(len(star_info)):
+            star_dict = {'id': star_info[i][0], 'name': star_info[i][1]}
+            star_list.append(star_dict)
+
+    return star_list
+
+
+def get_rating(conn, movie):
+    """
+        Query ratings table to get the ratings of the movie
+        using the movie_id and joining the tables through rstings table
+        :return: a List of Dictionaries with the k/v as 'rating' and 'votes'
+    """
+    rating_cur = conn.cursor()
+    rating_cur.execute("SELECT ratings.rating, ratings.votes FROM ratings, movies WHERE movies.id = ratings.movie_id AND title = ?", (movie,))
+    rating_info = rating_cur.fetchall()
+    
+    if len(rating_info) == 0:
+        return None
+    else:
+        rating_list = []
+        for i in range(len(rating_info)):
+            rating_dict = {'rating': rating_info[i][0], 'votes': rating_info[i][1]}
+            rating_list.append(rating_dict)
+
+    return rating_list
 
 if __name__ == "__main__":
     main()
