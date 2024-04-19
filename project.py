@@ -1,5 +1,6 @@
 import game_struct
 import get_movie
+import sys
 
 def main():
    # Printing how to play the game
@@ -23,6 +24,82 @@ def main():
    # Getting the sorted values from dedicated functions
    director = get_director(game_data)
    actor = get_actor(game_data)
+
+   # The director and actor variable I tought of doing the following
+   # for name in actor.split(", "):
+   # print(name)
+   # in order to display to the user
+
+   play = 3
+
+   print(title)
+
+   while play > 0:
+      if play == 3:
+         if len(director) == 1:
+            print(game_struct.first_tip())
+            print()
+            print(f"The director of the Movie: {director}")
+         else:
+            print(game_struct.first_tip())
+            print()
+            print(f"The directors of the Movie:")
+            for name in director.split(", "):
+               print(name)
+            print()
+            guess = input("Guess the movie: ")
+            if guess.lower() == title.lower():
+               print()
+               print(f"That is right! The movie is {title}!")
+               sys.exit(f"YOU WON!")
+            else:
+               print()
+               print(game_struct.first_wrong())
+               print()
+               play -= 1
+               continue
+      elif play == 2:
+         if len(actor) == 1:
+            print(game_struct.second_tip())
+            print()
+            print(f"The actor of the Movie: {actor}")
+         else:
+            print(game_struct.second_tip())
+            print()
+            print(f"The actors of the Movie:")
+            for name in actor.split(", "):
+               print(name)
+            print()
+            guess = input("Which movie you think it is: ")
+            if guess.lower() == title.lower():
+               print()
+               print(f"That is right! The movie is {title}!")
+               sys.exit(f"YOU WON!")
+            else:
+               print()
+               print(game_struct.second_wrong())
+               print()
+               play -= 1
+               continue
+      elif play == 1:
+         print(game_struct.third_tip())
+         print()
+         print(f"The year that it was released is {released_year}")
+         guess = input("Which movie it is: ")
+         if guess.lower() == title.lower():
+               print()
+               print(f"That is right! The movie is {title}!")
+               sys.exit(f"YOU WON!")
+         else:
+            print()
+            print(game_struct.third_wrong())
+            print(f"Title: {title}, released on: {released_year}, with {votes} voters it got a rating of: {rating}!")
+            play -= 1
+            continue
+   print()
+   print(game_struct.thank_you())
+   
+
 
 
 def get_director(game_data):
