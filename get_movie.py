@@ -2,42 +2,56 @@ import sqlite3
 import os
 
 def main():
+    """
+        The function main should be called in order to get the movie data
+        other functions were created and were called by the main
+        all the data of the movie can be found, processed and returned by the main function
+    """
     #Getting the current path and assigning the database file to a variable
     path = os.path.realpath(__file__)
     path = path.replace('get_movie.py', 'movies.db')
     database = path
 
+    # Creating connection to be used by other functions
     conn = connection(database)
+
+    # Variable that will be returned by this file program
+    game_data = []
     
     # Getting the movie information via random()
     movie_id, movie_title, movie_year = select_movie(conn)
-    print(f"Movie ID:{movie_id}, Movie Title:{movie_title}, Released year:{movie_year}")
-
+    movie_data = [{'title': movie_title}, {'released': movie_year}]
+    game_data.append(movie_data)
+    
     # Getting the director information
     director_information = get_director(conn, movie_title)
-    # Use the print below to check the returned List of dictionaries
-    # print(director_information)
+    director_data = []
     if director_information is None:
-        print(f"No directors for this Movie reported")
+        pass
     else: 
         for i in range(len(director_information)):
-            print(f"Director ID: {director_information[i]['id']}, Director Name: {director_information[i]['name']}")
+            director_data.append({'name': director_information[i]['name']})
+        game_data.append(director_data)
 
     # Getting the stars of the movie
     stars_information = get_stars(conn, movie_title)
+    stars_data = []
     if stars_information is None:
-        print(f"There is no star in this Movie reported")
+        pass
     else:    
         for j in range(len(stars_information)):
-            print(f"Star ID: {stars_information[j]['id']}, Star Name: {stars_information[j]['name']}")
+            stars_data.append({'name': stars_information[j]['name']})
+        game_data.append(stars_data)
 
     # Getting the rating for the movie
     rating_information = get_rating(conn, movie_title)
     if rating_information is None:
-        print(f"There is no rating recorded for this Movie yet")
+        pass
     else:    
-        for k in range(len(rating_information)):
-            print(f"Rating: {rating_information[k]['rating']}, Votes: {rating_information[k]['votes']}")
+        rating_data = [{'rating': rating_information[0]['rating']}, {'votes': rating_information[0]['votes']}]
+        game_data.append(rating_data)
+
+    return game_data
 
 
 def connection(database):
@@ -57,10 +71,8 @@ def select_movie(conn):
     """
         Querry movies Table for the Movie name, id and year randongly
     """
-    # Movie and year Cursor
     movie_cur = conn.cursor()
     movie_cur.execute("SELECT id, title, year FROM movies ORDER BY random() LIMIT 1")
-    # Getting the values of the Movie name and the Released year
     film = movie_cur.fetchall()
     movie_id, movie_name, release_year = film[0]
 
@@ -74,13 +86,10 @@ def get_director(conn, movie):
         IF there is no Director > function will return None
         :return: a List of Dictionaries with the k/v as 'id' and 'name'
     """
-    # Getting Director information
     director_cur = conn.cursor()
     director_cur.execute("SELECT people.id, people.name FROM people, directors, movies WHERE movies.id = directors.movie_id AND directors.person_id = people.id AND title = ?", (movie,))
-    # Getting the values of the director
     director_info = director_cur.fetchall()
-    # Use the print below to verify how many directors was found
-    # print(len(director_info))
+
     if len(director_info) == 0:
         return None
     else:
@@ -88,8 +97,7 @@ def get_director(conn, movie):
         for i in range(len(director_info)):
             director_dict = {'id': director_info[i][0], 'name': director_info[i][1]}
             director_list.append(director_dict)
-        # Use the print below to verify the List of Dictionaries created    
-        # print(director_info)
+
         return director_list
             
 
@@ -99,10 +107,9 @@ def get_stars(conn, movie):
         using the movie_id and joining the tables through stars table
         :return: a List of Dictionaries with the k/v as 'id' and 'name'
     """
-    # Getting stars information
+
     star_cur = conn.cursor()
     star_cur.execute("SELECT people.id, people.name FROM people, stars, movies WHERE movies.id = stars.movie_id AND stars.person_id = people.id AND title = ?", (movie,))
-    # Storing stars information
     star_info = star_cur.fetchall()
 
     if len(star_info) == 0:
