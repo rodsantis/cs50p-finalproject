@@ -16,7 +16,7 @@ def game_instructions():
     You will start the game with 1 hint and in every wrong guess you will
     gain 1 more tip.
     
-    Try to get it right, if you don't, don't worry it might be new Title for you to watch! {Style.RESET_ALL}
+    Try to get it right, if you don't, don't worry it might be a new Title for you to watch! {Style.RESET_ALL}
     {Fore.RED}<<<<<{Style.RESET_ALL}
     """
 
