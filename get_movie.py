@@ -1,5 +1,6 @@
 import sqlite3
 import os
+from pathlib import Path
 
 def main():
     """
@@ -8,8 +9,7 @@ def main():
         all the data of the movie can be found, processed and returned by the main function
     """
     #Getting the current path and assigning the database file to a variable
-    path = os.path.realpath(__file__)
-    path = path.replace('get_movie.py', 'movies.db')
+    path = str(Path(__file__).parent/"movies.db")
     database = path
 
     # Creating connection to be used by other functions
@@ -26,9 +26,7 @@ def main():
     # Getting the director information
     director_information = get_director(conn, movie_title)
     director_data = []
-    if director_information is None:
-        pass
-    else: 
+    if director_information is not None:
         for i in range(len(director_information)):
             director_data.append({'name': director_information[i]['name']})
         game_data.append(director_data)
@@ -36,22 +34,19 @@ def main():
     # Getting the stars of the movie
     stars_information = get_stars(conn, movie_title)
     stars_data = []
-    if stars_information is None:
-        pass
-    else:    
+    if stars_information is not None: 
         for j in range(len(stars_information)):
             stars_data.append({'name': stars_information[j]['name']})
         game_data.append(stars_data)
 
     # Getting the rating for the movie
     rating_information = get_rating(conn, movie_title)
-    if rating_information is None:
-        pass
-    else:    
+    if rating_information is not None:  
         rating_data = [{'rating': rating_information[0]['rating']}, {'votes': rating_information[0]['votes']}]
         game_data.append(rating_data)
 
     return game_data
+    
 
 
 def connection(database):

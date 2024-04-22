@@ -1,6 +1,6 @@
     # MOVIE GUESSING GAME
 
-    #### Video Demo:  <URL HERE>
+    #### Video Demo:  https://youtu.be/UgDIXgnoRWA
 
 
     #### Description:
@@ -67,9 +67,9 @@
     import get_movie
     import sys
     ```
-    The file have a *main() function*, one function to deal with the directors information and another to deal with the actors information.
+    The file have a *main() function*, one to check if the game information have the minimum amount of 4 values in the list, one function to deal with the directors information and another to deal with the actors information.
 
-    The first thing that will happen is that the *main() function* will be printing the game instructions and then will be checking in a *while loop* if the return value of the *get_movie.py* function returned all of the necessary values (which should be 4) or not. If not 4 it will be asking *get_movie.py* for another value until it satisfy the number of values 4 within our list.
+    The first thing that will happen is that the *main() function* will be printing the game instructions and then will be checking in a *while loop* (through the created function) if the return value of the *get_movie.py* function returned all of the necessary values (which should be 4) or not. If not 4 it will be asking *get_movie.py* for another value until it satisfy the number of values 4 within our list.
 
     Once we have the necessary number of values we will be processing then, some indexes in the list ([0] and [3]) are always the same, they contain only 2 key/value pair so I have assigned them to the variable without the need of another function.
 
@@ -88,3 +88,5 @@
     Once we have all of the values now stored in a variable in the *main() function* another *while loop* will be running for 3 times as it will be now the game logic.
 
     In each time it will be using the information that I have prepared in the variables created and printing to the player in the terminal.
+
+    The last thing that was created and implemented was the test_project.py file in order to test my functions wihing the project file and the requirements.txt file.

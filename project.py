@@ -8,13 +8,7 @@ def main():
 
    # Setting a variable to be used to get game data returns that will satisfy
    # the game needs in order to be playable
-   game_data = None
-   while True:
-      game_data = get_movie.main()
-      if len(game_data) < 4:
-         continue
-      else:
-         break
+   game_data = game_info()
 
    # Setting the variables with its values which will always have one value to store
    title = game_data[0][0]['title']
@@ -31,8 +25,6 @@ def main():
    # in order to display to the user
 
    play = 3
-
-   print(title)
 
    while play > 0:
       if play == 3:
@@ -100,6 +92,15 @@ def main():
    print(game_struct.thank_you())
    
 
+def game_info():
+   game_data = None
+   while True:
+      game_data = get_movie.main()
+      if len(game_data) < 4:
+         continue
+      break
+
+   return game_data
 
 
 def get_director(game_data):
