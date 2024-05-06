@@ -1,8 +1,5 @@
     # MOVIE GUESSING GAME
 
-    #### Video Demo:  https://youtu.be/UgDIXgnoRWA
-
-
     #### Description:
     This is my final project for **CS50P**.
 
